@@ -11,3 +11,15 @@ public class RestfullWebServicesApplication {
     }
 
 }
+/*http://localhost:8080/swagger-ui/index.html#/
+        <!-- https://www.bezkoder.com/spring-boot-swagger-3/ -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.0.3</version>
+        </dependency>
+
+para pegarmos o json:
+http://localhost:8080/v3/api-docs
+
+*/

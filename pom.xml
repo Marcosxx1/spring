@@ -45,12 +45,19 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- https://www.bezkoder.com/spring-boot-swagger-3/ -->
+        <!-- https://www.bezkoder.com/spring-boot-swagger-3/
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>2.0.3</version>
-        </dependency>
+        </dependency>-->
+
+        <!-- Para aceitar XML
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>-->
+
     </dependencies>
 
     <build>
