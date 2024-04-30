@@ -60,8 +60,7 @@ public class PostService {
 
     @GetMapping("/jpa/user/{user_id}/posts-create/{post_id}")
     public ResponseEntity<Object> updateUser(@PathVariable Integer user_id, @PathVariable Integer post_id) {
-        System.out.println("user_id " + user_id);
-        System.out.println("post_id " + post_id);
+
         User existingUser = userRepository
                 .findById(user_id).
                 orElseThrow(() ->
