@@ -1,5 +1,6 @@
 package com.estudos.restfullwebservices.service;
 
+import com.estudos.restfullwebservices.dtos.UserCreateDTO;
 import com.estudos.restfullwebservices.exception.UserFoundException;
 import com.estudos.restfullwebservices.exception.UserNotFoundException;
 import com.estudos.restfullwebservices.model.User;
@@ -7,8 +8,10 @@ import com.estudos.restfullwebservices.repository.PostRepository;
 import com.estudos.restfullwebservices.repository.UserRepository;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -48,28 +51,26 @@ public class UserService {
         return location;
     }
 
-    @PatchMapping("/jpa/user/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
-        User existingUser = userRepository
-                .findById(id).
-                orElseThrow(() ->
-                        new UserNotFoundException("User not found with id: " + id));
+    public User updateUser(Integer id, UserCreateDTO updatedUserDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-        existingUser.setName(updatedUser.getName());
-        existingUser.setBirthDate(updatedUser.getBirthDate());
+        existingUser.setName(updatedUserDTO.getName());
+        existingUser.setEmail(updatedUserDTO.getEmail());
+        existingUser.setPassword(updatedUserDTO.getPassword());
+        existingUser.setIsAdmin(updatedUserDTO.getIsAdmin());
+        existingUser.setBirthDate(updatedUserDTO.getBirthDate());
+        existingUser.setDriverLicense(updatedUserDTO.getDriverLicense());
+        existingUser.setCep(updatedUserDTO.getCep());
 
-        userRepository.save(existingUser);
-
-        return ResponseEntity.ok().build();
+        return userRepository.save(existingUser);
     }
 
-    @GetMapping("/jpa/user/get-all")
     public List<User> retrieveAllUsers() {
         return userRepository.findAll();
     }
 
-    @GetMapping("/jpa/user/{id}")
-    public EntityModel<User> getUser(@PathVariable int id) {
+    public EntityModel<User> getUserById( Integer id) {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isEmpty()) throw new UserNotFoundException("id" + id);
@@ -83,8 +84,10 @@ public class UserService {
         return entityModel;
     }
 
-    @DeleteMapping("/jpa/user/{id}")
-    public void deleteUser(@PathVariable int id) {
+    public void deleteUser(Integer id) {
+        Optional<User> user = userRepository.findById(id);
+
+        if (user.isEmpty()) throw new UserNotFoundException("id" + id);
         userRepository.deleteById(id);
     }
 

@@ -2,6 +2,7 @@ package com.estudos.restfullwebservices.dtos;
 
 import com.estudos.restfullwebservices.model.Car;
 import com.estudos.restfullwebservices.model.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +16,10 @@ public class UserResponseDTO {
     private LocalDate birth_date;
     private String DriverLicense;
     private String cep;
+
+    @JsonIgnore
     private List<Car> cars;
+    @JsonIgnore
     private List<Post> post;
 
     public Integer getId() {
