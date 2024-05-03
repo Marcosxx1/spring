@@ -26,7 +26,6 @@ public class UserDaoService {
 
     public User findOne(Integer id) {
 
-
         Predicate<? super User> predicate = user -> user
                 .getId()
                 .equals(id);
@@ -45,6 +44,7 @@ public class UserDaoService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = user.getBirthDate().format(formatter);
 
+
         LocalDate date = LocalDate.parse(formattedDate, formatter);
         user.setBirthDate(date);
 
@@ -52,7 +52,7 @@ public class UserDaoService {
         return user;
     }
 
-    public User update(User user){
+    public User update(User user) {
         User userFound = this.findOne(user.getId());
         if (userFound != null) {
             users.remove(userFound);
@@ -61,7 +61,7 @@ public class UserDaoService {
         return userFound;
     }
 
-    public void deleteById(int id){
+    public void deleteById(int id) {
         Predicate<? super User> predicate = user -> user.getId().equals(id);
         users.removeIf(predicate);
     }

@@ -7,8 +7,6 @@ import com.estudos.restfullwebservices.model.User;
 import com.estudos.restfullwebservices.repository.PostRepository;
 import com.estudos.restfullwebservices.repository.UserRepository;
 import jakarta.validation.Valid;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,9 +14,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class PostService {
@@ -55,7 +50,7 @@ public class PostService {
 
         if (user.isEmpty()) throw new UserNotFoundException("id: " + id);
 
-        return user.get().getPosts();
+        return user.get().getPost();
     }
 
     @GetMapping("/jpa/user/{user_id}/posts-create/{post_id}")

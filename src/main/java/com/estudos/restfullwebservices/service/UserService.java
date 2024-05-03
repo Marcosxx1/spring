@@ -1,11 +1,10 @@
 package com.estudos.restfullwebservices.service;
 
+import com.estudos.restfullwebservices.exception.UserFoundException;
 import com.estudos.restfullwebservices.exception.UserNotFoundException;
-import com.estudos.restfullwebservices.model.Post;
 import com.estudos.restfullwebservices.model.User;
 import com.estudos.restfullwebservices.repository.PostRepository;
 import com.estudos.restfullwebservices.repository.UserRepository;
-import jakarta.validation.Valid;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +29,15 @@ public class UserService {
         this.postRepository = postRepository;
     }
 
-    @PostMapping("/jpa/user")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        System.out.println(user);
+    public URI createUser(User user) {
+        System.out.println("In the service: " + user);
+        var existingUserByEmail = userRepository.findByEmail(user.getEmail());
+        if (existingUserByEmail.isPresent()) throw new UserFoundException("User already registered with this email");
+
+        var existingUserByLicense = userRepository.findByDriverLicense(user.getDriverLicense());
+        if (existingUserByLicense.isPresent())
+            throw new UserFoundException("User already registered with this driver's license");
+
         User savedUser = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -40,7 +45,7 @@ public class UserService {
                 .buildAndExpand(savedUser.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).build();
+        return location;
     }
 
     @PatchMapping("/jpa/user/{id}")
