@@ -26,8 +26,7 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    @PostMapping("/jpa/user/{id}/posts-create")
-    public ResponseEntity<Object> createPostForUser(@PathVariable int id, @Valid @RequestBody Post post) {
+    public URI createPostForUser(@PathVariable Integer id, Post post) {
         Optional<User> user = userRepository.findById(id);
 
         if (user.isEmpty()) throw new UserNotFoundException("id: " + id);
@@ -41,20 +40,18 @@ public class PostService {
                 .buildAndExpand(savedPost.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).build();
+        return location;
     }
 
-    @GetMapping("/jpa/user/{id}/posts")
-    public List<Post> retrievePostForUser(@PathVariable int id) {
-        Optional<User> user = userRepository.findById(id);
+    public List<Post> retrievePostForUser(@PathVariable  Integer user_id) {
+        Optional<User> user = userRepository.findById(user_id);
 
-        if (user.isEmpty()) throw new UserNotFoundException("id: " + id);
+        if (user.isEmpty()) throw new UserNotFoundException("user_id: " + user_id);
 
         return user.get().getPost();
     }
 
-    @GetMapping("/jpa/user/{user_id}/posts-create/{post_id}")
-    public ResponseEntity<Object> updateUser(@PathVariable Integer user_id, @PathVariable Integer post_id) {
+    public ResponseEntity<Object> updateUser(Integer user_id, Integer post_id) {
 
         User existingUser = userRepository
                 .findById(user_id).

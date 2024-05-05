@@ -23,13 +23,11 @@ public class UserResource {
         this.userDaoService = userDaoService;
     }
 
-    @GetMapping("/user/get-all")
     public List<User> retrieveAllUsers() {
         return userDaoService.findAll();
     }
 
 
-    @GetMapping("/user/{id}")
     public EntityModel<User> getUser(@PathVariable int id) {
         User user = userDaoService.findOne(id);
 
@@ -44,13 +42,11 @@ public class UserResource {
         return entityModel;
     }
 
-    @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable int id) {
         userDaoService.deleteById(id);
     }
 
 
-    @PostMapping("/user")
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
 
         User savedUser = userDaoService.save(user);
@@ -63,7 +59,6 @@ public class UserResource {
         return ResponseEntity.created(location).build();
     }
 
-    @PatchMapping("/user/{id}")
     public ResponseEntity<Object> updateUser(@RequestBody User user) {
         userDaoService.update(user);
 
